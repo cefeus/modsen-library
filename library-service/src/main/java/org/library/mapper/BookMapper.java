@@ -18,8 +18,6 @@ import org.mapstruct.ReportingPolicy;
 )
 public interface BookMapper {
 
-    @Mapping(target = "authors", ignore = true)
-    @Mapping(target = "genres", ignore = true)
     BookResponseDto toResponse(Book book);
 
     CreationBookResponseDto toCreationResponse(Book book);
@@ -29,7 +27,5 @@ public interface BookMapper {
     @Mapping(target = "genres", ignore = true)
     Book toBook(BookRequestDto dto);
 
-    @Mapping(target = "authors", ignore = true)
-    @Mapping(target = "genres", ignore = true)
     Book update(@MappingTarget Book book, BookRequestDto dto);
 }
