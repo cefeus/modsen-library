@@ -1,0 +1,106 @@
+services:
+
+  postgres:
+    container_name: library-database
+    image: postgres:14.8-alpine3.18
+    environment:
+      POSTGRES_DB: "postgres"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      PGDATA: "/data/postgres"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres:/data/postgres
+    networks:
+      - default
+    restart: unless-stopped
+
+  library-gateway-service:
+    container_name: library-gateway-service
+    build:
+      context: library-gateway-service
+      dockerfile: ./Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - default
+    restart: unless-stopped
+
+
+  library-eureka-discovery-service:
+    container_name: library-eureka-discovery-service
+    build:
+      context: library-eureka-discovery-service
+      dockerfile: ./Dockerfile
+    ports:
+      - "8761:8761"
+    networks:
+      - default
+    restart: unless-stopped
+
+  auth-service:
+    container_name: auth-service
+    build:
+      context: auth-service
+      dockerfile: ./Dockerfile
+    environment:
+      DB_HOSTNAME: postgres
+    ports:
+      - "8083:8083"
+    networks:
+      - default
+    depends_on:
+      library-gateway-service:
+        condition: service_started
+      library-eureka-discovery-service:
+        condition: service_started
+    restart: unless-stopped
+
+  library-service:
+    container_name: library-service
+    build:
+      context: library-service
+      dockerfile: ./Dockerfile
+    environment:
+      RESERVATION_HOSTNAME: library-tracking-service
+      DB_HOSTNAME: postgres
+    ports:
+      - "8084:8084"
+    networks:
+      - default
+    depends_on:
+      library-gateway-service:
+        condition: service_started
+      library-eureka-discovery-service:
+        condition: service_started
+      auth-service:
+        condition: service_started
+    restart: unless-stopped
+
+  library-tracking-service:
+    container_name: library-tracking-service
+    build:
+      context: library-tracking-service
+      dockerfile: ./Dockerfile
+    environment:
+      DB_HOSTNAME: postgres
+    ports:
+      - "8081:8081"
+    networks:
+      - default
+    depends_on:
+      library-gateway-service:
+        condition: service_started
+      library-eureka-discovery-service:
+        condition: service_started
+      auth-service:
+        condition: service_started
+    restart: unless-stopped
+
+networks:
+  default:
+
+volumes:
+  postgres:
+  pgadmin:
