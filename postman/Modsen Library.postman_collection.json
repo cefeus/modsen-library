@@ -807,7 +807,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/v1/auth/sing-in",
+							"raw": "http://localhost:8080/api/v1/auth/sign-in",
 							"protocol": "http",
 							"host": [
 								"localhost"
