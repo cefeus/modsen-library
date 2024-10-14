@@ -11,7 +11,7 @@ import java.util.List;
 public interface BookReservationRepository extends JpaRepository<BookReservation, Long> {
 
     @Query(value = "SELECT * FROM book_reservations br " +
-            "WHERE borrowing_time = NULL " +
+            "WHERE borrowing_time IS NULL " +
             "OR return_time < :time",
             nativeQuery = true)
     List<BookReservation> findAllAvailable(@Param("time")Instant returnTime);

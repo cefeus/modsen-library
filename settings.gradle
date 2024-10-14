@@ -1,2 +1,6 @@
 rootProject.name = 'modsen-library'
+include 'library-service'
+include 'library-tracking-service'
+include 'auth-service'
+include 'library-eureka-discovery-service'
 

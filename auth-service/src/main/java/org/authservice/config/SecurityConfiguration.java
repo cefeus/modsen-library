@@ -36,7 +36,6 @@ public class SecurityConfiguration {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(request -> {
                     var corsConfiguration = new CorsConfiguration();
-                    //TODO add apigateway and auth service itself
                     corsConfiguration.setAllowedOriginPatterns(List.of("*"));
                     corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     corsConfiguration.setAllowedHeaders(List.of("*"));
@@ -47,7 +46,6 @@ public class SecurityConfiguration {
                         .requestMatchers("api/v1/auth/**").permitAll()
                         .requestMatchers("api/v1/users/**").hasRole("ADMIN")
                         .requestMatchers("/error").permitAll()
-                        //TODO setup swagger here
                         .requestMatchers("/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
