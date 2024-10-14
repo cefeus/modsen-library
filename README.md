@@ -37,3 +37,7 @@ Docker needed.
 3. Wait few minutes for all services correct deployment.
 4. Get Jwt token on auth/sign-in endpoint (auth/sign-up before needed to create user)
 5. Use generated JWT to make requests
+
+## POSTMAN 
+
+In postman folder can be found postman collection for API testing. Bearer token update in collection authorization tab needed before use. 
